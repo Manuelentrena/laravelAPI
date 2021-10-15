@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Http\Request;
 use App\Http\Resources\V1\PostResource;
+use App\Http\Resources\V1\PostCollection;
 
 class PostController extends Controller
 {
@@ -16,7 +17,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        return Post::all()->toJson();
+        /* return Post::all()->toJson(); */
+        $listPost = new PostCollection(Post::all());
+        return $listPost->toJson();
     }
 
     /**
@@ -38,7 +41,8 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return new PostResource($post);
+        $post = new PostResource($post);
+        return $post->toJson();
     }
 
     /**
