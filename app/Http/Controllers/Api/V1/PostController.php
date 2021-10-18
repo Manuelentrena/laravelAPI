@@ -7,64 +7,34 @@ use App\Post;
 use Illuminate\Http\Request;
 use App\Http\Resources\V1\PostResource;
 use App\Http\Resources\V1\PostCollection;
+use Symfony\Component\HttpFoundation\Response;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         /* return Post::all()->toJson(); */
-        $listPost = new PostCollection(Post::all());
-        return $listPost->toJson();
+        /* $listPost = new PostCollection(Post::all()); */
+        /* $listPost = PostResource::collection(Post::latest()->paginate()); */
+        $listPost = new PostCollection(Post::latest()->paginate());
+        return $listPost;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
     public function show(Post $post)
     {
-        $post = new PostResource($post);
-        return $post->toJson();
+        return new PostResource($post);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Post $post)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        /* return response()->json("hola")->setStatusCode(Response::HTTP_NO_CONTENT); */
+        return response([
+            'data' => [
+                'status' => Response::HTTP_NO_CONTENT,
+                'message' => 'post borrado',
+            ]
+        ]);
     }
 }
