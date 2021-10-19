@@ -10,6 +10,11 @@ use App\Http\Resources\V2\PostCollection;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        /* $this->middleware('client.credentials'); */
+        $this->middleware('auth:api');
+    }
     /**
      * Display a listing of the resource.
      *

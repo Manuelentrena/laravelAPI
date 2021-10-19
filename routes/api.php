@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use Api\V1\PostController as PostV1;
 use Api\V2\PostController as PostV2;
 
+
+
 /* Route::apiResource('v1/posts', Api\V1\PostController::class); */
 
 
@@ -18,11 +20,19 @@ Route::prefix('v1')->group(function () {
 Route::prefix('v2')->group(function () {
     Route::apiResource('posts', PostV2::class, ['as' => 'v2'])
         ->only(['index', 'show']);
+    /* Route::post('oauth/token', "\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken"); */
 });
+
+/* Ve a tu archivo app/Providers/AuthServiceProvider.php y en el método boot, llama a Passport de la siguiente forma: Passport::routes(null, ['prefix' => 'api/oauth']);. */
+
+
+/* Route::post('oauth/token', AccessTokenController::class)->only(['issueToken']); */
 
 /* ->middleware('scope:admin') */
 
-Route::group([
+
+/* Funcionan con el controller AuthController creado por mi */
+/* Route::group([
     'prefix' => 'auth'
 ], function () {
     Route::post('login', 'AuthController@login');
@@ -34,7 +44,7 @@ Route::group([
         Route::get('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@user');
     });
-});
+}); */
 
 /* $this->routes(function () {
     Route::prefix('api/v1')
